@@ -75,8 +75,7 @@ window.onscroll = () => {
 
 // (Top Scroll) Scroller
 topbutton.onclick = () => {
-  document.body.scrollTop = 0;
-  document.documentElement.scrollTop = 0;
+  window.scrollTo({top: 0, behavior: "smooth"})
 }
 
 
@@ -84,7 +83,6 @@ topbutton.onclick = () => {
 const lightbox = document.createElement('div');
 lightbox.id = 'lightbox';
 document.body.appendChild(lightbox);
-console.log(images);
 
 lightbox.addEventListener('click', e => {
   if(e.target !== e.currentTarget)
