@@ -23,9 +23,15 @@ body {
     column-count: 3;
 }
 
-.display img {
+.image-item {
     width: 100%;
     margin-bottom: 10px;
+}
+
+.image-item:hover {
+    cursor: pointer;
+    filter: brightness(70%);
+    transition-duration: 0.2s;
 }
 
 .qbtn {
@@ -99,9 +105,9 @@ body {
 }
 
 .focus {
-    max-width: 70vh;
-    max-height: 70vh;
     animation:fade-in 0.2s cubic-bezier(.39,.575,.565,1.000) both;
+    max-height: 90vh;
+    max-width: 90vw;
 }
 
 #lightbox #caption {

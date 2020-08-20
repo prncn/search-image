@@ -1,7 +1,6 @@
 const scroller = document.querySelector('#scroller');
 const sentinel = document.querySelector('#sentinel');
 const topbutton = document.querySelector('#totop');
-let images = [];
 let alldata = [];
 let counter = 1;
 
@@ -10,7 +9,6 @@ let counter = 1;
 function loadItems() {
   fetch(`/load?page=${counter}`).then((response) => {
     response.json().then((data) => {
-      console.log(data);
 
       if (!data.length) {
         sentinel.innerHTML = "NO MORE IMAGES";
@@ -18,12 +16,11 @@ function loadItems() {
       }
 
       for (let i = 0; i < data.length; i++) {
-        images.push(document.createElement('img'));
-        data[i].DOM = images[images.length - 1];
+        data[i].DOM = document.createElement('img');
+        data[i].DOM.src = data[i]['url'];
+        data[i].DOM.className = 'image-item';
+        scroller.appendChild(data[i].DOM);
         alldata.push(data[i]);
-        images[images.length - 1].src = data[i]['url'];
-        images[images.length - 1].className = 'image-item';
-        scroller.appendChild(images[images.length - 1]);
       }
 
       alldata.forEach(item => {
@@ -53,7 +50,19 @@ function loadItems() {
           flink.appendChild(focus);
           lightbox.appendChild(desc);
         })
-      })
+      });
+
+
+      const display = $('.display');
+      let _cols = Number(display.css('column-count'))
+      for(let _col = 0; _col < _cols; _col++) {
+          for (let i = 0; i < alldata.length; i += _cols) {
+              if (alldata[i + _col].DOM !== undefined)
+                scroller.appendChild(alldata[i + _col].DOM);
+
+          }
+      }
+
     })
   })
 }
@@ -64,7 +73,9 @@ const intersectionObserver = new IntersectionObserver(entries => {
     setTimeout(function () {
       loadItems();
       counter += 1;
+
     }, 200);
+    console.log(alldata);
   }
 });
 intersectionObserver.observe(sentinel);
@@ -86,7 +97,7 @@ topbutton.onclick = () => {
 }
 
 
-// Image Lightbox
+// Init Lightbox
 const lightbox = document.createElement('div');
 lightbox.id = 'lightbox';
 document.body.appendChild(lightbox);
