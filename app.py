@@ -21,7 +21,6 @@ def load():
     query = session['query']
     color = session['color']
 
-    time.sleep(0.4)
     if request.args:
         counter = int(request.args.get('page'))
         if counter > 5:

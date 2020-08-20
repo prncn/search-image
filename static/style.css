@@ -104,19 +104,19 @@ body {
     animation:fade-in 0.2s cubic-bezier(.39,.575,.565,1.000) both;
 }
 
-#lightbox #cpn {
+#lightbox #caption {
     padding-top: 10px;
     color: white;
     transition-duration: 0.2s;
     opacity: 0;
 }
 
-#lightbox .focus:hover ~ #cpn {
+#lightbox .focus:hover ~ #caption {
     transition-duration: 0.2s;
     opacity: 1;
 }
 
-#cpn:hover {
+#caption:hover {
     opacity: 1;
 }
 

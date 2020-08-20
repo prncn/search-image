@@ -2,6 +2,7 @@ const scroller = document.querySelector('#scroller');
 const sentinel = document.querySelector('#sentinel');
 const topbutton = document.querySelector('#totop');
 let images = [];
+let alldata = [];
 let counter = 1;
 
 
@@ -18,37 +19,41 @@ function loadItems() {
 
       for (let i = 0; i < data.length; i++) {
         images.push(document.createElement('img'));
-        images[i].src = data[i]['url'];
-        scroller.appendChild(images[i]);
+        data[i].DOM = images[images.length - 1];
+        alldata.push(data[i]);
+        images[images.length - 1].src = data[i]['url'];
+        images[images.length - 1].className = 'image-item';
+        scroller.appendChild(images[images.length - 1]);
+      }
 
-        images[i].onclick = () => {
+      alldata.forEach(item => {
+        $(item.DOM).on('click', function (e) {
           lightbox.classList.add('active');
           const flink = document.createElement('a');
           const focus = document.createElement('img');
           flink.className = 'focus';
           focus.className = 'focus';
-          flink.href = data[i]['unsplashed'];
-          focus.src = images[i].src;
-
+          flink.href = item['unsplashed'];
+          focus.src = this.src;
 
           const desc = document.createElement('label');
-          if(data[i]['caption'] == null)
-            desc.innerHTML = "Image by " + data[i]['author'];
+          if(item['caption'] == null)
+            desc.innerHTML = "Image by " + item['author'];
           else {
-            if(data[i]['caption'].length > 50)
-              desc.innerHTML = data[i]['caption'].substring(0, 50) + '...';
+            if(item['caption'].length > 50)
+              desc.innerHTML = item['caption'].substring(0, 50) + '...';
             else
-              desc.innerHTML = data[i]['caption'];
+              desc.innerHTML = item['caption'];
           }
-          desc.id = "cpn";
+          desc.id = 'caption';
           while(lightbox.firstChild)
             lightbox.removeChild(lightbox.firstChild);
 
           lightbox.appendChild(flink);
           flink.appendChild(focus);
           lightbox.appendChild(desc);
-        }
-      }
+        })
+      })
     })
   })
 }
@@ -56,8 +61,10 @@ function loadItems() {
 // (Lazy Loading) Intersection Observer
 const intersectionObserver = new IntersectionObserver(entries => {
   if (entries.some(entry => entry.intersectionRatio > 0)) {
-    loadItems();
-    counter += 1;
+    setTimeout(function () {
+      loadItems();
+      counter += 1;
+    }, 200);
   }
 });
 intersectionObserver.observe(sentinel);
@@ -89,3 +96,4 @@ lightbox.addEventListener('click', e => {
       return;
   lightbox.classList.remove('active');
 })
+
